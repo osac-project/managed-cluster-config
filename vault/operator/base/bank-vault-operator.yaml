@@ -498,6 +498,8 @@ spec:
                 type: array
               config:
                 x-kubernetes-preserve-unknown-fields: true
+              configPath:
+                type: string
               credentialsConfig:
                 properties:
                   env:
@@ -11508,14 +11510,14 @@ metadata:
     app.kubernetes.io/instance: vault-operator
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: vault-operator
-    helm.sh/chart: vault-operator-1.22.5
+    helm.sh/chart: vault-operator-1.22.6
   name: vault-operator
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    helm.sh/chart: vault-operator-1.22.5
+    helm.sh/chart: vault-operator-1.22.6
   name: vault-operator
 rules:
 - apiGroups:
@@ -11596,7 +11598,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    helm.sh/chart: vault-operator-1.22.5
+    helm.sh/chart: vault-operator-1.22.6
   name: vault-operator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -11614,7 +11616,7 @@ metadata:
     app.kubernetes.io/instance: vault-operator
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: vault-operator
-    helm.sh/chart: vault-operator-1.22.5
+    helm.sh/chart: vault-operator-1.22.6
   name: vault-operator
 spec:
   ports:
@@ -11636,7 +11638,7 @@ metadata:
     app.kubernetes.io/instance: vault-operator
     app.kubernetes.io/managed-by: Helm
     app.kubernetes.io/name: vault-operator
-    helm.sh/chart: vault-operator-1.22.5
+    helm.sh/chart: vault-operator-1.22.6
   name: vault-operator
 spec:
   replicas: 1
@@ -11668,8 +11670,8 @@ spec:
         - name: OPERATOR_LOG_LEVEL
           value: debug
         - name: BANK_VAULTS_IMAGE
-          value: ghcr.io/bank-vaults/bank-vaults:v1.31.3
-        image: ghcr.io/bank-vaults/vault-operator:v1.22.5
+          value: ghcr.io/bank-vaults/bank-vaults:v1.31.4
+        image: ghcr.io/bank-vaults/vault-operator:v1.22.6
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
