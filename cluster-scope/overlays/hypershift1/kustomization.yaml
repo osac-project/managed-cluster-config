@@ -177,4 +177,3 @@ patches:
         configOverrides: {}
         enabled: false
         name: cluster-api-provider-aws-preview
-
