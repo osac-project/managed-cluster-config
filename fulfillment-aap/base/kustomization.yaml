@@ -1,9 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+- namespace-fulfillment-aap.yaml
+- serviceaccount-cloudkit-sa.yaml
+- serviceaccount-template-publisher.yaml
+- clusterrole-cloudkit-sa.yaml
+- clusterrolebinding-cloudkit-sa.yaml
 - ansibleautomationplatform.yaml
 - role-create-controller-token.yaml
 - rolebinding-aap-fulfillment-template-publisher.yaml
-- serviceaccount-template-publisher.yaml
 - externalsecret-cloudkit-aap-cluster-fulfillment-ig.yaml
 - externalsecret-cloudkit-aap-config-as-code-ig.yaml
