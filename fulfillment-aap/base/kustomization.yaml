@@ -11,3 +11,4 @@ resources:
 - rolebinding-aap-fulfillment-template-publisher.yaml
 - externalsecret-cloudkit-aap-cluster-fulfillment-ig.yaml
 - externalsecret-cloudkit-aap-config-as-code-ig.yaml
+- externalsecret-cloudkit-aap-config-as-code-manifest-ig.yaml
