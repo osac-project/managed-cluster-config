@@ -124,8 +124,7 @@ spec:
     - type: jwt
       path: jwt/vault-backup
       config:
-        oidc_discovery_url: https://kubernetes.default.svc
-        oidc_discovery_ca_pem: "${ file `/run/secrets/kubernetes.io/serviceaccount/ca.crt`}"
+        jwks_url: https://api.hypershift1.nerc.mghpcc.org:6443/openid/v1/jwks
       roles:
       - name: vault-backup
         role_type: "jwt"
@@ -143,8 +142,7 @@ spec:
     - type: jwt
       path: jwt/innabox-reader
       config:
-        oidc_discovery_url: https://kubernetes.default.svc
-        oidc_discovery_ca_pem: "${ file `/run/secrets/kubernetes.io/serviceaccount/ca.crt`}"
+        jwks_url: https://api.hypershift1.nerc.mghpcc.org:6443/openid/v1/jwks
       roles:
       - name: innabox-reader
         role_type: "jwt"
