@@ -3,9 +3,29 @@ kind: Kustomization
 namespace: vault-operator
 
 labels:
-- includeSelectors: true
-  pairs:
-    app: vault-operator
+  - includeSelectors: true
+    pairs:
+      app: vault-operator
 
 resources:
-- bank-vault-operator.yaml
+  - bank-vault-operator.yaml
+
+patches:
+  - patch: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: vault-operator
+      spec:
+        template:
+          spec:
+            affinity: {}
+            containers:
+            - name: vault-operator
+              resources:
+                limits:
+                  cpu: 512m
+                  memory: 1Gi
+                requests:
+                  cpu: 256m
+                  memory: 512Mi
