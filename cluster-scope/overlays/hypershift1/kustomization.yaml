@@ -4,176 +4,177 @@ commonLabels:
   nerc.mghpcc.org/kustomized: "true"
 
 resources:
-- ../common
+  - ../common
 
-- certificates
-- ingress
-- clusterrolebindings
-- machineconfigs
-- nodenetworkconfigurationpolicies
-- feature/odf
-- externalsecrets
-- dns
-- metallb-config
-- acm-observability
-- clustersecretstore
+  - certificates
+  - ingress
+  - clusterrolebindings
+  - machineconfigs
+  - nodenetworkconfigurationpolicies
+  - feature/odf
+  - externalsecrets
+  - dns
+  - metallb-config
+  - acm-observability
+  - clustersecretstore
+  - clusterversion.yaml
 
-- ../../bundles/metallb
-- ../../bundles/nerc-certificate-clusterissuers
-- ../../bundles/virt
-- ../../bundles/acm-cim
-- ../../bundles/openshift-gitops
-- ../../bundles/ansible-automation-platform-operator
+  - ../../bundles/metallb
+  - ../../bundles/nerc-certificate-clusterissuers
+  - ../../bundles/virt
+  - ../../bundles/acm-cim
+  - ../../bundles/openshift-gitops
+  - ../../bundles/ansible-automation-platform-operator
 
 components:
   - ../../components/nerc-oauth-github
 
 configMapGenerator:
-- name: cluster-monitoring-config
-  namespace: openshift-monitoring
-  options:
-    disableNameSuffixHash: true
-  files:
-  - config.yaml=configmaps/cluster-monitoring-config.yaml
+  - name: cluster-monitoring-config
+    namespace: openshift-monitoring
+    options:
+      disableNameSuffixHash: true
+    files:
+      - config.yaml=configmaps/cluster-monitoring-config.yaml
 
 patches:
-- target:
-    kind: ClusterIssuer
-    name: letsencrypt-.*-dns01
-  patch: |
-    - op: replace
-      path: /spec/acme/solvers/0/selector/dnsZones/0
-      value: hypershift1.nerc.mghpcc.org
-- target:
-    kind: OAuth
-    name: cluster
-  patch: |
-    - op: replace
-      path: /spec/identityProviders/0/name
-      value: ocp-on-nerc
-    - op: replace
-      path: /spec/identityProviders/0/github/clientID
-      value: 1a8790fb1d1c5f46c510
-    - op: add
-      path: /spec/identityProviders/-
-      value:
-        name: innabox
-        type: GitHub
-        mappingMethod: claim
-        github:
-          clientID: Ov23liC8gchXAkOQXKOk
-          clientSecret:
-            name: innabox-client-secret
-          teams:
-          - innabox/fulfillment-wg
-- target:
-    kind: ExternalSecret
-  patch: |
-    - op: replace
-      path: /spec/secretStoreRef
-      value:
-        kind: ClusterSecretStore
-        name: cluster-secrets
-- target:
-    kind: ExternalSecret
-    name: aws-route53-credentials
-  patch: |
-    - op: add
-      path: /metadata/namespace
-      value: openshift-operators
-    - op: replace
-      path: /spec/dataFrom/0/extract/key
-      value: innabox/hypershift1/openshift-operators/aws-route53-credentials
-- target:
-    kind: ExternalSecret
-    name: github-client-secret
-  patch: |
-    - op: replace
-      path: /spec/data/0/remoteRef/key
-      value: innabox/hypershift1/openshift-config/github-client-secret
-- target:
-    kind: ExternalSecret
-    name: github-group-sync
-  patch: |
-    - op: replace
-      path: /spec/data/0/remoteRef/key
-      value: innabox/hypershift1/group-sync-operator/github-group-sync-token
-    - op: replace
-      path: /spec/data/1/remoteRef/key
-      value: innabox/hypershift1/group-sync-operator/github-group-sync-token
-- target:
-    kind: APIServer
-    name: cluster
-  patch: |
-    - op: replace
-      path: /spec/servingCerts/namedCertificates/0/names/0
-      value: api.hypershift1.nerc.mghpcc.org
-- target:
-    kind: Subscription
-    name: odf-operator
-    namespace: openshift-storage
-  patch: |
-    - op: replace
-      path: /spec/channel
-      value: stable-4.17
-- target:
-    kind: Subscription
-    name: acm
-    namespace: open-cluster-management
-  patch: |
-    - op: replace
-      path: /spec/channel
-      value: release-2.13
-- target:
-    kind: Subscription
-    name: openshift-gitops-operator
-  patch: |
-    - op: replace
-      path: /spec/channel
-      value: gitops-1.16
-- target:
-    kind: Subscription
-    name: ansible-automation-platform-operator
-  patch: |
-    - op: replace
-      path: /spec/channel
-      value: stable-2.5-cluster-scoped
+  - target:
+      kind: ClusterIssuer
+      name: letsencrypt-.*-dns01
+    patch: |
+      - op: replace
+        path: /spec/acme/solvers/0/selector/dnsZones/0
+        value: hypershift1.nerc.mghpcc.org
+  - target:
+      kind: OAuth
+      name: cluster
+    patch: |
+      - op: replace
+        path: /spec/identityProviders/0/name
+        value: ocp-on-nerc
+      - op: replace
+        path: /spec/identityProviders/0/github/clientID
+        value: 1a8790fb1d1c5f46c510
+      - op: add
+        path: /spec/identityProviders/-
+        value:
+          name: innabox
+          type: GitHub
+          mappingMethod: claim
+          github:
+            clientID: Ov23liC8gchXAkOQXKOk
+            clientSecret:
+              name: innabox-client-secret
+            teams:
+            - innabox/fulfillment-wg
+  - target:
+      kind: ExternalSecret
+    patch: |
+      - op: replace
+        path: /spec/secretStoreRef
+        value:
+          kind: ClusterSecretStore
+          name: cluster-secrets
+  - target:
+      kind: ExternalSecret
+      name: aws-route53-credentials
+    patch: |
+      - op: add
+        path: /metadata/namespace
+        value: openshift-operators
+      - op: replace
+        path: /spec/dataFrom/0/extract/key
+        value: innabox/hypershift1/openshift-operators/aws-route53-credentials
+  - target:
+      kind: ExternalSecret
+      name: github-client-secret
+    patch: |
+      - op: replace
+        path: /spec/data/0/remoteRef/key
+        value: innabox/hypershift1/openshift-config/github-client-secret
+  - target:
+      kind: ExternalSecret
+      name: github-group-sync
+    patch: |
+      - op: replace
+        path: /spec/data/0/remoteRef/key
+        value: innabox/hypershift1/group-sync-operator/github-group-sync-token
+      - op: replace
+        path: /spec/data/1/remoteRef/key
+        value: innabox/hypershift1/group-sync-operator/github-group-sync-token
+  - target:
+      kind: APIServer
+      name: cluster
+    patch: |
+      - op: replace
+        path: /spec/servingCerts/namedCertificates/0/names/0
+        value: api.hypershift1.nerc.mghpcc.org
+  - target:
+      kind: Subscription
+      name: odf-operator
+      namespace: openshift-storage
+    patch: |
+      - op: replace
+        path: /spec/channel
+        value: stable-4.17
+  - target:
+      kind: Subscription
+      name: acm
+      namespace: open-cluster-management
+    patch: |
+      - op: replace
+        path: /spec/channel
+        value: release-2.13
+  - target:
+      kind: Subscription
+      name: openshift-gitops-operator
+    patch: |
+      - op: replace
+        path: /spec/channel
+        value: gitops-1.16
+  - target:
+      kind: Subscription
+      name: ansible-automation-platform-operator
+    patch: |
+      - op: replace
+        path: /spec/channel
+        value: stable-2.5-cluster-scoped
 
-# per: https://docs.openshift.com/container-platform/4.17/hosted_control_planes/hcp-deploy/hcp-deploy-virt.html
-- target:
-    kind: IngressController
-    name: default
-    namespace: openshift-ingress-operator
-  patch: |
-    - op: add
-      path: /spec/routeAdmission
-      value:
-        wildcardPolicy: WildcardsAllowed
+  # per: https://docs.openshift.com/container-platform/4.17/hosted_control_planes/hcp-deploy/hcp-deploy-virt.html
+  - target:
+      kind: IngressController
+      name: default
+      namespace: openshift-ingress-operator
+    patch: |
+      - op: add
+        path: /spec/routeAdmission
+        value:
+          wildcardPolicy: WildcardsAllowed
 
-- target:
-    kind: ClusterRoleBinding
-    name: nerc-ops
-  patch: |
-    - op: add
-      path: /subjects/-
-      value:
-        apiGroup: rbac.authorization.k8s.io
-        kind: Group
-        name: fulfillment-wg
+  - target:
+      kind: ClusterRoleBinding
+      name: nerc-ops
+    patch: |
+      - op: add
+        path: /subjects/-
+        value:
+          apiGroup: rbac.authorization.k8s.io
+          kind: Group
+          name: fulfillment-wg
 
-- target:
-    kind: MultiClusterEngine
-    name: multiclusterengine
-  patch: |
-    - op: add
-      path: /spec/overrides/components/-
-      value:
-        configOverrides: {}
-        enabled: false
-        name: cluster-api-preview
-    - op: add
-      path: /spec/overrides/components/-
-      value:
-        configOverrides: {}
-        enabled: false
-        name: cluster-api-provider-aws-preview
+  - target:
+      kind: MultiClusterEngine
+      name: multiclusterengine
+    patch: |
+      - op: add
+        path: /spec/overrides/components/-
+        value:
+          configOverrides: {}
+          enabled: false
+          name: cluster-api-preview
+      - op: add
+        path: /spec/overrides/components/-
+        value:
+          configOverrides: {}
+          enabled: false
+          name: cluster-api-provider-aws-preview
