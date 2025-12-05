@@ -138,7 +138,7 @@ patches:
     patch: |
       - op: replace
         path: /spec/channel
-        value: stable-2.5-cluster-scoped
+        value: stable-2.6-cluster-scoped
 
   # per: https://docs.openshift.com/container-platform/4.17/hosted_control_planes/hcp-deploy/hcp-deploy-virt.html
   - target:
