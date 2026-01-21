@@ -55,18 +55,21 @@ patches:
       - op: replace
         path: /spec/identityProviders/0/github/clientID
         value: 1a8790fb1d1c5f46c510
+      - op: replace
+        path: /spec/identityProviders/0/mappingMethod
+        value: add
       - op: add
         path: /spec/identityProviders/-
         value:
-          name: innabox
+          name: osac-project
           type: GitHub
-          mappingMethod: claim
+          mappingMethod: add
           github:
             clientID: Ov23liC8gchXAkOQXKOk
             clientSecret:
               name: innabox-client-secret
             teams:
-            - innabox/fulfillment-wg
+            - osac-project/fulfillment-wg
   - target:
       kind: ExternalSecret
     patch: |
